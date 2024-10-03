@@ -2,7 +2,6 @@
 require "vendor/autoload.php";
 session_start();
 
-use App\Controllers\TaskController;
 use Config\Router;
 
 $router = new Router();
@@ -14,6 +13,6 @@ $router->addRoute('/', 'HomeController', 'index');
 $router->addRoute('/register', 'RegisterController', 'index');
 $router->addRoute('/login', 'LoginController', 'index');
 $router->addRoute('/logout', 'LogoutController', 'logout');
-$router->addRoute('/task', 'TaskController', 'task');
+$router->addRoute('/addTask', 'TaskController', 'createTask');
 
 $router->handleRequest();

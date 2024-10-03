@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Models;
+
 use Config\DataBase;
+
 class Task
 {
     protected ?int $id;
@@ -25,10 +27,10 @@ class Task
         $this->id_user = $id_user;
     }
 
-    public function saveTask(): bool
+    public function addTask(): bool
     {
         $pdo = DataBase::getConnection();
-        $sql = "INSERT INTO task (id,title,content,creation_date,start_task,stop_task,point,id_user) VALUES (?,?,?,?,?,?,?,?)";
+        $sql = "INSERT INTO `task` (`id`, `title`, `content`, `creation_date`, `start_task`, `stop_task`, `point`, `id_user`) VALUES (?,?,?,?,?,?,?,?)";
         $statement = $pdo->prepare($sql);
         return $statement->execute([$this->id, $this->title, $this->content, $this->creation_date, $this->start_task, $this->stop_task, $this->point, $this->id_user]);
     }

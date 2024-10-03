@@ -1,35 +1,43 @@
-<?php  
+<?php
 
 namespace App\Controllers;
 
-use App\Models\Task;
 use App\Utils\AbstractController;
+use App\Models\Task;
 
 class TaskController extends AbstractController
 {
-    public function task()
+    public function createTask()
     {
-        if(isset($_POST['taskTitle'], $_POST['taskContent'] )){
-            $this->check('taskTitle', $_POST['taskTitle']);
-            $this->check('taskContent', $_POST['taskContent']);
+        if (isset($_SESSION['user']) && $_SESSION['user']['idRole'] == 1) {
 
-            if(empty($this->arrayError)) {
-                $title = htmlspecialchars($_POST['taskTitle']);
-                $content = htmlspecialchars($_POST['taskContent']);
-                $startDate = htmlspecialchars($_POST['startDate']);
-                $stopDate = htmlspecialchars($_POST['stopDate']);
-                $dateTime = date('Y-m-d');
+            if (isset($_POST['title'])) {
+                //$stopTask = date_format($_POST['stop_task'], "Y/m/d H:i:s");
+                $this->check('title', $_POST['title']);
+                $this->check('start_task', $_POST['start_task']);
+                $this->check('stop_task', $_POST['stop_task']);
+                $this->check('point', $_POST['point']);
 
-                $task = new Task(null, $title, $content, $dateTime, $startDate, $stopDate, null,null, null);
-                $task->saveTask();
-                $this->redirectToRoute('/');
+
+                if (empty($this->arrayError)) {
+                    $title = htmlspecialchars($_POST['title']);
+                    $start_task = htmlspecialchars($_POST['start_task']);
+                    $stop_task = htmlspecialchars($_POST['stop_task']);
+                    $point = htmlspecialchars($_POST['point']);
+                    $content = htmlspecialchars($_POST['content']);
+                    $creation_date = date('Y-m-d H:i:s');
+                    $id_user = $_SESSION['user']['idUser'];
+
+                    $task = new Task(null, $title, $content, $creation_date, $start_task, $stop_task, $point, $id_user);
+
+                    $task->addTask();
+                    $this->redirectToRoute('/');
+                }
             }
-        } 
-        require_once(__DIR__ . "/../Views/task.view.php");
-    } 
 
+            require_once(__DIR__ . '/../Views/task/createTask.view.php');
+        } else {
+            $this->redirectToRoute('/');
+        }
+    }
 }
-
-
-
-// 
